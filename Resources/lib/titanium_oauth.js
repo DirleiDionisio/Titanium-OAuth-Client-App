@@ -65,7 +65,16 @@ var TitaniumOAuth = function(params) {
 	};
 	
 	// Get Authorization PIN
-	var getPIN = function(e)
+	var getPIN = function(e) {
+		var pin = params.getPin(authWebView);
+		if (pin) {
+			self.accessToken(pin);
+			if(oauthWin) {
+				oauthWin.close();
+			}				
+		}
+	};
+	/*var getPIN = function(e)
 	{
 		var html = authWebView.evalJS("document.getElementById('oauth_pin').innerHTML");
 		if (html != '') {
@@ -80,7 +89,7 @@ var TitaniumOAuth = function(params) {
 				}
 			}
 		}
-	};
+	};*/
 	
 	// Request Token
 	this.requestToken = function(callback){
@@ -313,13 +322,17 @@ var TitaniumOAuth = function(params) {
 		};
 		xhr.onerror = function(e) {
 
-			Ti.UI.createAlertDialog({
-				title: 'Service Unavailable',
-				message: 'An error ocurred while making a request.'
-			}).show();
-
-			// Logout
-			self.dispatch('logout');
+			if (e.error) {
+				Ti.UI.createAlertDialog({
+					title: 'Service Unavailable',
+					message: 'An error ocurred while making a request.'
+				}).show();
+	
+				// Logout
+				self.dispatch('logout');
+			} else {
+				callback(this.responseText);
+			}
 		};
 		xhr.open(options.method, finalUrl, false);
 		xhr.send();

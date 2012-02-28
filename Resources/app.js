@@ -84,14 +84,32 @@ b1.addEventListener('click', function(){
 		consumerSecret: Ti.App.Properties.getString('consumer_secret'),
 		requestTokenURL: Ti.App.Properties.getString('request_token_url'),
 		userAuthorizationURL: Ti.App.Properties.getString('authorize_url'),
-		accessTokenURL: Ti.App.Properties.getString('access_token_url')
+		accessTokenURL: Ti.App.Properties.getString('access_token_url'),
+		getPin: function(authWebView) {
+			var html = authWebView.evalJS("document.getElementById('oauth_pin').innerHTML");
+			if (html != '') {
+				var regex = new RegExp("([0-9]+)", "m"); 
+				if (regex) {
+					var pin = html.match(regex)[0]; 
+					if (pin) {
+						return pin;
+					}
+				}
+			}
+			return null;
+		}
 	};
 	
+	// to reset tokens
+	//Ti.App.Properties.setString('accessToken', null);
+	//Ti.App.Properties.setString('accessTokenSecret', null);
+
 	if (parameters.consumerKey && 
 		parameters.consumerSecret &&
 		parameters.requestTokenURL &&
 		parameters.userAuthorizationURL &&
-		parameters.accessTokenURL) {
+		parameters.accessTokenURL &&
+		typeof parameters.getPin === 'function') {
 			
 		var options = {
 			method: Ti.App.Properties.getString('method'),
