@@ -1,0 +1,6 @@
+.settings
+tmp
+build
+build.log
+.settings/com.appcelerator.titanium.core.prefs
+.fastdev.lock
