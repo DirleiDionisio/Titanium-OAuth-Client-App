@@ -23,7 +23,8 @@ var addTextField = function(window, propertyName) {
 		left: '5dp',
 		right: '5dp',
 		backgroundColor: 'white',
-		autocapitalization: false
+		autocapitalization: 0,
+		font: {fontSize: '12dp'}
 	});
 	
 	textField.addEventListener('change', function(e) {
@@ -63,10 +64,10 @@ addTextField(winTest, 'parameter_name_3');
 addTextField(winTest, 'parameter_value_3');
 
 var b1 = Ti.UI.createButton({
-	bottom: 10,
-	left: 10,
-	right: 10,
-	height: 50,
+	bottom: '10dp',
+	left: '10dp',
+	right: '10dp',
+	height: '50dp',
 	title: 'test'
 });
 
